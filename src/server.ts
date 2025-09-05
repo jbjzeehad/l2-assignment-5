@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
-import express from "express";
+import express, { Request, Response } from "express";
 import { Server } from "http";
 import mongoose from "mongoose";
+import { envVars } from "./app/config/env";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 let server: Server;
@@ -10,14 +11,12 @@ const app = express();
 
 const startServer = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://tour-db:tourdb@tour.nemxwwb.mongodb.net/pdsystem?retryWrites=true&w=majority&appName=tour"
-    );
+    await mongoose.connect(envVars.DB_URL);
 
     console.log("Connected to DB!");
 
-    server = app.listen(5000, () => {
-      console.log("server is listening to port 5000");
+    server = app.listen(envVars.PORT, () => {
+      console.log(`server is listening to port ${envVars.PORT}`);
     });
   } catch (error) {
     console.log(error);
@@ -25,3 +24,7 @@ const startServer = async () => {
 };
 
 startServer();
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Welcome to Parcel Delevary System !!");
+});
