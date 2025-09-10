@@ -2,26 +2,37 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-interface EnvConfig {
-  PORT: string;
+interface Env {
+  PORT: number;
   DB_URL: string;
   NODE_ENV: "development" | "production";
+  // ......................
+
+  HASH_SALT: number;
 }
 
-const loadEnvVariables = (): EnvConfig => {
-  const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV"];
+function loadEnv(): Env {
+  const requiredVariables: string[] = [
+    "PORT",
+    "DB_URL",
+    "NODE_ENV",
+    "HASH_SALT",
+  ];
 
-  requiredEnvVariables.forEach((key) => {
-    if (!process.env[key]) {
-      throw new Error(`Missing require environment variable ${key}`);
+  requiredVariables.forEach((variable) => {
+    if (!process.env[variable]) {
+      throw new Error(`Missing environment variable: ${variable}`);
     }
   });
 
   return {
-    PORT: process.env.PORT as string,
+    PORT: Number(process.env.PORT),
     DB_URL: process.env.DB_URL as string,
     NODE_ENV: process.env.NODE_ENV as "development" | "production",
-  };
-};
+    // .......................
 
-export const envVars = loadEnvVariables();
+    HASH_SALT: Number(process.env.HASH_SALT),
+  };
+}
+
+export const env = loadEnv();

@@ -1,4 +1,6 @@
+import bcryptjs from "bcryptjs";
 import { model, Schema } from "mongoose";
+import { env } from "../../config/env";
 import { IUser, UserRole } from "./user.interface";
 
 const userSchema = new Schema<IUser>(
@@ -24,6 +26,19 @@ const userSchema = new Schema<IUser>(
     versionKey: false,
   }
 );
+
+userSchema.pre("save", async function (next) {
+  try {
+    if (this.isModified("password")) {
+      const hash = await bcryptjs.hash(this.password, env.HASH_SALT);
+      this.password = hash;
+    }
+    next();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    next(error);
+  }
+});
 
 const User = model<IUser>("User", userSchema);
 
