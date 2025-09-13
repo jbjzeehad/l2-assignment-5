@@ -1,7 +1,5 @@
 import dotenv from "dotenv";
-
 dotenv.config();
-
 interface Env {
   FRONTEND_URL: string;
   PORT: number;
@@ -18,7 +16,6 @@ interface Env {
   ADMIN_ADDRESS: string;
   ADMIN_PHONE: string;
 }
-
 function loadEnv(): Env {
   const requiredVariables: string[] = [
     "PORT",
