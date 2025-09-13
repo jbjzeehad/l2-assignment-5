@@ -5,7 +5,6 @@ import {
   ParcelStatusLog,
   ParcelTypes,
 } from "./parcel.interface";
-
 const ParcelStatusLogSchema = new Schema<ParcelStatusLog>(
   {
     status: { type: String, required: true, enum: Object.values(ParcelStatus) },
@@ -16,7 +15,6 @@ const ParcelStatusLogSchema = new Schema<ParcelStatusLog>(
   },
   { timestamps: false, _id: false }
 );
-
 const ParcelSchema = new Schema<IParcel>(
   {
     trackingId: { type: String, required: true, unique: true },
@@ -46,5 +44,4 @@ const ParcelSchema = new Schema<IParcel>(
     versionKey: false,
   }
 );
-
 export const Parcel = model<IParcel>("Parcel", ParcelSchema);

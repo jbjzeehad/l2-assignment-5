@@ -1,6 +1,5 @@
 import z from "zod";
 import { ParcelStatus, ParcelTypes } from "./parcel.interface";
-
 const createParcelSchema = z.object({
   title: z
     .string("Title is must be a string")
@@ -50,7 +49,6 @@ const updateSenderParcelSchema = z.object({
   fee: z.number("Fee is must be a number").optional(),
   type: z.enum(Object.values(ParcelTypes)).optional(),
 });
-
 export const ParcelValidation = {
   createParcelSchema,
   updateAdminParcelSchema,
