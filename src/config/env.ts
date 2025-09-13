@@ -55,5 +55,4 @@ function loadEnv(): Env {
     ADMIN_PHONE: process.env.ADMIN_PHONE as string,
   };
 }
-
 export const env = loadEnv();
