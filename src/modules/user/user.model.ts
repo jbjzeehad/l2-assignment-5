@@ -2,23 +2,19 @@ import bcryptjs from "bcryptjs";
 import { model, Schema } from "mongoose";
 import { env } from "../../config/env";
 import { IUser, UserRole } from "./user.interface";
-
 const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
-
     email: { type: String, required: true, unique: true },
-
     password: { type: String, required: true },
-
     phone: { type: String, required: true, unique: true },
-
     address: { type: String, required: true },
-
-    role: { type: String, required: true, enum: Object.values(UserRole) },
-
+    role: {
+      type: String,
+      required: true,
+      enum: Object.values(UserRole),
+    },
     isBlocked: { type: Boolean, default: false },
-
     isDeleted: { type: Boolean, default: false },
   },
   {
@@ -26,7 +22,6 @@ const userSchema = new Schema<IUser>(
     versionKey: false,
   }
 );
-
 userSchema.pre("save", async function (next) {
   try {
     if (this.isModified("password")) {
@@ -39,7 +34,5 @@ userSchema.pre("save", async function (next) {
     next(error);
   }
 });
-
 const User = model<IUser>("User", userSchema);
-
 export default User;

@@ -1,28 +1,52 @@
 import z from "zod";
-
-export const createUserZodSchema = z.object({
+import { UserRole } from "./user.interface";
+const userCreateSchema = z.object({
   name: z
-    .string()
-    .min(2, { message: "Name must be at least 2 character!" })
-    .max(50, { message: "Name cannot excees 50 characters" }),
-  email: z
-    .string()
-    .min(2, { message: "Email must be at least 2 character!" })
-    .max(50, { message: "Email cannot excees 50 characters" }),
-  phone: z
-    .string()
-    .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
-      message: "Phone number must be valid for Bangladesh",
-    })
-    .optional(),
+    .string("Name is must be a string")
+    .min(3, "Name must be at least 3 characters long")
+    .max(50, "Name must be at most 50 characters long"),
+  email: z.email(),
+  phone: z.string().min(11, "Phone number must be at least 10 characters long"),
   password: z
     .string()
+    .min(8, "Password must be at least 8 characters long")
     .regex(/^(?=.*[A-Z])/, {
-      message: "Password must contain at least 1 uppercase letter.",
+      error: "Password must contain at least 1 uppercase letter.",
     })
-    .regex(/^(?=.*\d)/, { message: "Password must contain at least 1 number." })
-    .min(8, { message: "Password must be at least 8 characters long." }),
-  address: z
-    .string()
-    .max(200, { message: "Address cannot excees 200 characters." }),
+    .regex(/^(?=.*[!@#$%^&*])/, {
+      error: "Password must contain at least 1 special character.",
+    })
+    .regex(/^(?=.*\d)/, {
+      error: "Password must contain at least 1 number.",
+    }),
+  address: z.string(),
+  role: z.enum([UserRole.RECEIVER, UserRole.SENDER]),
 });
+const userUpdateSchema = z
+  .object({
+    name: z
+      .string()
+      .min(3, "Name must be at least 3 characters long")
+      .max(50, "Name must be at most 50 characters long")
+      .optional(),
+    email: z.email().optional(),
+    phone: z
+      .string()
+      .min(11, "Phone number must be at least 10 characters long")
+      .optional(),
+    address: z.string().optional(),
+    role: z.enum([UserRole.RECEIVER, UserRole.SENDER]).optional(),
+    password: z.string().optional(),
+    isDeleted: z.boolean().optional(),
+    isBlocked: z.boolean().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if ("password" in data) {
+      ctx.addIssue({
+        path: ["password"],
+        code: "custom",
+        message: "Password cannot be updated from this route.",
+      });
+    }
+  });
+export const userValidation = { userCreateSchema, userUpdateSchema };
