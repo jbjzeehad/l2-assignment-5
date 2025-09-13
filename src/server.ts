@@ -1,12 +1,9 @@
-/* eslint-disable no-console */
 import { Server } from "http";
 import mongoose from "mongoose";
 import app from "./app";
 import { env } from "./config/env";
 import starterAdmin from "./utils/starterAdmin";
-
 let server: Server;
-
 type ExitSignals =
   | "SIGINT"
   | "SIGTERM"

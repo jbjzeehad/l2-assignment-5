@@ -1,8 +1,6 @@
-/* eslint-disable no-console */
 import { env } from "../config/env";
 import { IUser, UserRole } from "../modules/user/user.interface";
 import User from "../modules/user/user.model";
-
 const starterAdmin = async () => {
   try {
     const isExist = await User.findOne({ email: env.ADMIN_EMAIL });
@@ -26,5 +24,4 @@ const starterAdmin = async () => {
     console.log(error);
   }
 };
-
 export default starterAdmin;

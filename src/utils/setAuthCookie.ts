@@ -1,8 +1,8 @@
 import { Response } from "express";
-interface Tokens {
+type Tokens = {
   accessToken: string;
   refreshToken?: string;
-}
+};
 const setAuthCookie = (res: Response, tokens: Tokens) => {
   const { accessToken, refreshToken } = tokens;
   if (accessToken) {
