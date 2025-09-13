@@ -1,0 +1,20 @@
+
+1. Modular Code Architecture follow korte hobe.
+
+2. user interface banabo jkhane ( Role based auhtoriztion ) admin, sender , reciever thakbe.
+
+3. role based control : sender-only, reciever-only, 
+admin-only, public or shared
+
+4. role based authorization middleware
+
+5. sender/reciever logic + schema design + validation  
+
+6. JWT-based login system. User login korbe email/password diye → backend JWT token generate korbe
+Token e user info thakbe: { sub: userId, role: 'sender|receiver|admin', isBlocked }. Ei token client side e store korbe (localStorage/sessionStorage). Porer request e Authorization: Bearer <token> diye pathabe
+
+7. Password hashing (bcryptjs)
+Registration e password bcrypt diye hash kora lagbe. Login e hash compare kore validate kora hobe
+
+8. Role-based access control (express middleware)
+JWT decode kore req.user attach korbe. Middleware check korbe je ei user ki ei route access korte parbe (role-based)

@@ -1,5 +1,4 @@
 import { Types } from "mongoose";
-
 export enum ParcelTypes {
   Document = "Document",
   Box = "Box",
@@ -9,7 +8,6 @@ export enum ParcelTypes {
   Perishable = "Perishable",
   Other = "Other",
 }
-
 export enum ParcelStatus {
   Requested = "Requested",
   Approved = "Approved",
@@ -19,7 +17,6 @@ export enum ParcelStatus {
   Cancelled = "Cancelled",
   Blocked = "Blocked",
 }
-
 export interface ParcelStatusLog {
   timestamp: Date;
   status: ParcelStatus;
@@ -27,9 +24,8 @@ export interface ParcelStatusLog {
   location: string;
   notes?: string;
 }
-
 export interface IParcel {
-  _id: string;
+  _id?: string;
   title: string;
   weight: number;
   deliveryDate: Date;
@@ -42,14 +38,13 @@ export interface IParcel {
   receiver: Types.ObjectId;
   toAddress: string;
   toPhone: string;
-  fromPhone: string;
   fromAddress: string;
+  fromPhone: string;
   fee: number;
   type: ParcelTypes;
   status: ParcelStatus;
   statusLogs: ParcelStatusLog[];
 }
-
 export interface ICreateParcel {
   title: string;
   weight: number;
