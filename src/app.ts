@@ -16,7 +16,7 @@ app.use(
 );
 app.use(cookieParser());
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Hello World" });
+  res.status(200).json({ message: "Parcel Delivery System" });
 });
 app.use("/api/v1", router);
 app.use(globalErrorHandler);
