@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { compare } from "bcryptjs";
 import { StatusCodes } from "http-status-codes";
 import { JwtPayload, verify } from "jsonwebtoken";

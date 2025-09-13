@@ -1,5 +1,4 @@
 import z from "zod";
-
 const loginSchema = z.object({
   email: z.email(),
   password: z
@@ -15,7 +14,6 @@ const loginSchema = z.object({
       error: "Password must contain at least 1 number.",
     }),
 });
-
 const resetPasswordSchema = z.object({
   oldPassword: z
     .string()
@@ -29,7 +27,6 @@ const resetPasswordSchema = z.object({
     .regex(/^(?=.*\d)/, {
       error: "Password must contain at least 1 number.",
     }),
-
   newPassword: z
     .string()
     .min(8, "Password must be at least 8 characters long")
@@ -43,5 +40,4 @@ const resetPasswordSchema = z.object({
       error: "Password must contain at least 1 number.",
     }),
 });
-
 export const authValidation = { loginSchema, resetPasswordSchema };

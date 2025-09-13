@@ -4,7 +4,6 @@ import { JwtPayload, verify } from "jsonwebtoken";
 import { env } from "../config/env";
 import AppError from "../error/AppError";
 import User from "../modules/user/user.model";
-
 const checkAuth =
   (...roles: string[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
