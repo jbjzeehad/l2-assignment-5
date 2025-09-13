@@ -1,30 +1,50 @@
 /* eslint-disable no-console */
-import express, { Request, Response } from "express";
 import { Server } from "http";
 import mongoose from "mongoose";
-import { envVars } from "./app/config/env";
+import app from "./app";
+import { env } from "./config/env";
+import starterAdmin from "./utils/starterAdmin";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let server: Server;
 
-const app = express();
-
+type ExitSignals =
+  | "SIGINT"
+  | "SIGTERM"
+  | "uncaughtException"
+  | "unhandledRejection";
+const exitSignals: ExitSignals[] = [
+  "SIGINT",
+  "SIGTERM",
+  "uncaughtException",
+  "unhandledRejection",
+];
 const startServer = async () => {
   try {
-    await mongoose.connect(envVars.DB_URL);
-
-    console.log("Connected to DB!");
-
-    server = app.listen(envVars.PORT, () => {
-      console.log(`server is listening to port ${envVars.PORT}`);
+    console.log("Server is starting");
+    server = app.listen(env.PORT, () => {
+      console.log(`Server is running on ${env.PORT}`);
     });
+    console.log("Server started");
+    console.log("Connecting to database");
+    await mongoose.connect(env.DB_URL);
+    console.log("Database connected");
   } catch (error) {
     console.log(error);
   }
 };
-
-startServer();
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Welcome to Parcel Delevary System !!");
-});
+function signalHandler(err: ExitSignals) {
+  process.on(err, (error) => {
+    console.log(`${err} detected ..... server shutting down`, error);
+    if (server) {
+      server.close(() => {
+        process.exit(1);
+      });
+    }
+    process.exit(1);
+  });
+}
+exitSignals.forEach(signalHandler);
+(async () => {
+  await startServer();
+  await starterAdmin();
+})();
