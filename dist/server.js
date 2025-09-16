@@ -12,20 +12,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const app_1 = __importDefault(require("./app"));
+const env_1 = require("./config/env");
+const starterAdmin_1 = __importDefault(require("./utils/starterAdmin"));
 let server;
-const app = (0, express_1.default)();
+const exitSignals = [
+    "SIGINT",
+    "SIGTERM",
+    "uncaughtException",
+    "unhandledRejection",
+];
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield mongoose_1.default.connect("mongodb+srv://tour-db:tourdb@tour.nemxwwb.mongodb.net/pdsystem?retryWrites=true&w=majority&appName=tour");
-        console.log("Connected to DB!");
-        server = app.listen(5000, () => {
-            console.log("server is listening to port 5000");
+        console.log("Server is starting");
+        server = app_1.default.listen(env_1.env.PORT, () => {
+            console.log(`Server is running on ${env_1.env.PORT}`);
         });
+        console.log("Server started");
+        console.log("Connecting to database");
+        yield mongoose_1.default.connect(env_1.env.DB_URL);
+        console.log("Database connected");
     }
     catch (error) {
         console.log(error);
     }
 });
-startServer();
+function signalHandler(err) {
+    process.on(err, (error) => {
+        console.log(`${err} detected ..... server shutting down`, error);
+        if (server) {
+            server.close(() => {
+                process.exit(1);
+            });
+        }
+        process.exit(1);
+    });
+}
+exitSignals.forEach(signalHandler);
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield startServer();
+    yield (0, starterAdmin_1.default)();
+}))();
