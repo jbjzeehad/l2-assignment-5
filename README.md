@@ -1,8 +1,10 @@
 # Parcel Delivery System
 
-• GitHub Repository : https://github.com/jbjzeehad/l2-assignment-5
-• Live Deployment : https://parceldeliverysystem.vercel.app/
-• Video Explanation : https://drive.google.com/file/d/1UNSXVK4LNsnymvp0ark6UzwKzYtp3PM-/view?usp=sharing
+#### • GitHub Repository : https://github.com/jbjzeehad/l2-assignment-5
+
+#### • Live Deployment : https://parceldeliverysystem.vercel.app/
+
+#### • Video Explanation : https://drive.google.com/file/d/1UMSXVK3KMtmzhwp0ark6UzwKzYtp3PM-/view?usp=sharing
 
 ## Features
 
